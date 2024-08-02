@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Distance Calculator</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Edu+AU+VIC+WA+NT+Hand:wght@400..700&family=Freeman&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playwrite+AR:wght@100..400&family=Quicksand:wght@300..700&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <h1 style="text-align: center;">Distance Calculator</h1>
+    <form id="distanceForm">
+      <div>
+        <label for="startLocation">Start Location:</label>
+        <input type="text" id="startLocation" required>
+      </div>
+      <div>
+        <label for="endLocation">End Location:</label>
+        <input type="text" id="endLocation" required>
+      </div>
+      <div>
+        <label for="hqLocation">District Headquarters:</label>
+        <input type="text" id="hqLocation" required>
+      </div>
+      <button type="submit">Get Distances</button>
+    </form>
+    <div id="results">
+      <p id="startToEndDistance"></p>
+      <p id="hqToEndDistance"></p>
+    </div>
+  </div>
+  <footer class="footer">
+        <p>&copy; 2024 Saketh Pinumalla. All rights reserved.</p>
+</footer>
+
+  <script>
+    document.getElementById('distanceForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+  
+      const startLocation = document.getElementById('startLocation').value + ', India';
+      const endLocation = document.getElementById('endLocation').value + ', India';
+      const hqLocation = document.getElementById('hqLocation').value + ', India';
+  
+      const response = await fetch('/api/get-distances', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ startLocation, endLocation, hqLocation }),
+      });
+  
+      const data = await response.json();
+  
+      document.getElementById('startToEndDistance').innerText = `Distance from Start to End: ${data.startToEnd} km`;
+      document.getElementById('hqToEndDistance').innerText = `Distance from District HQ to nd: ${data.hqToEnd} km`;
+    });
+  </script>
+  
+</body>
+</html>
